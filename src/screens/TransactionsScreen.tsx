@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   View,
   Text,
@@ -6,28 +7,52 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@react-native-vector-icons/ionicons';
-import { Colors } from '../theme/colors';
-import { Images } from '../assets/images';
 import { transactionsData } from '../data/transactionData';
+import { MainTabParamList } from '../navigation/types';
+import { useNavigation } from '@react-navigation/native';
+import { Colors } from '../theme/Colors';
+import { Images } from '../assets/images';
 
-const TransactionsScreen = ({ navigation }) => {
+type Transaction = {
+  id: string;
+  title: string;
+  amount: string;
+  color?: string;
+  date: string;
+  icon: string;
+  iconColor: string;
+  status?: string;
+};
+
+type TransactionsScreenProps = NativeStackNavigationProp<
+  MainTabParamList,
+  'Payments'
+>;
+
+const TransactionsScreen: React.FC = () => {
+  const navigation = useNavigation<TransactionsScreenProps>();
+
   const groupTransactionsByDate = () => {
     const today = new Date().toISOString().split('T')[0];
     const yesterday = new Date(Date.now() - 86400000)
       .toISOString()
       .split('T')[0];
 
-    const formatDate = dateStr => {
+    const formatDate = (dateStr: string) => {
       const date = new Date(dateStr);
-      const options = { month: 'long', day: 'numeric' };
+      const options: Intl.DateTimeFormatOptions = {
+        month: 'long',
+        day: 'numeric',
+      };
       return date.toLocaleDateString('en-US', options);
     };
 
-    const grouped = {};
+    const grouped: Record<string, Transaction[]> = {};
 
-    transactionsData.forEach(item => {
-      let label;
+    transactionsData.forEach((item: Transaction) => {
+      let label: string;
 
       if (item.date === today) {
         label = 'Today';
@@ -46,7 +71,7 @@ const TransactionsScreen = ({ navigation }) => {
 
   const groupedData = groupTransactionsByDate();
 
-  const renderTransaction = ({ item }) => (
+  const renderTransaction = ({ item }: { item: Transaction }) => (
     <View style={styles.transactionRow}>
       {item.icon === 'Fiverr' ? (
         <Image
@@ -73,7 +98,7 @@ const TransactionsScreen = ({ navigation }) => {
             },
           ]}
         >
-          <Ionicons name={item.icon} size={23} color={item.iconColor} />
+          <Ionicons name={item.icon as any} size={23} color={item.iconColor} />
         </View>
       )}
 
@@ -99,7 +124,7 @@ const TransactionsScreen = ({ navigation }) => {
     </View>
   );
 
-  const renderSection = (label, data) =>
+  const renderSection = (label: string, data: Transaction[]) =>
     data.length > 0 && (
       <View key={label} style={{ marginBottom: 7 }}>
         <Text style={styles.sectionTitle}>{label}</Text>
@@ -122,11 +147,10 @@ const TransactionsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => navigation.replace('Main')}
+          onPress={() => navigation.goBack()}
         >
           <Ionicons name="close" size={22} color="#222" />
         </TouchableOpacity>

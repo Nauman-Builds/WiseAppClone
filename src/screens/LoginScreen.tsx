@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,27 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@react-native-vector-icons/ionicons';
-import { Colors } from '../theme/colors';
+import { RootStackParamList } from '../navigation/types';
+import { useNavigation } from '@react-navigation/native';
+import { Colors } from '../theme/Colors';
 import { Images } from '../assets/images';
 
-const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
 
-  const handleLogin = () => {
-    navigation.replace('Main');
+const LoginScreen: React.FC = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleLogin = (): void => {
+    navigation.replace('Main', { screen: 'Home' });
   };
 
   return (
@@ -28,11 +38,7 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.backButton}>
         <Ionicons name="arrow-back-sharp" size={25} color="black" />
       </TouchableOpacity>
-
-      {/* Title */}
       <Text style={styles.title}>Log in</Text>
-
-      {/* Email */}
       <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
@@ -41,8 +47,6 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-
-      {/* Password */}
       <Text style={styles.label}>Password</Text>
       <View style={styles.passwordContainer}>
         <TextInput
@@ -93,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.socialButton}>
           <Image
             source={Images.apple_logo}
-            style={{ width: 27, height: 27, resizeMode: 'contain' }}
+            style={{ width: 28, height: 28, resizeMode: 'contain' }}
           />
         </TouchableOpacity>
       </View>
@@ -207,8 +211,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   socialButton: {
-    width: 103,
-    height: 46,
+    width: '31.4%',
+    height: 47,
     borderWidth: 1,
     borderColor: '#404040ff',
     borderRadius: 30,
@@ -216,8 +220,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   socialIcon: {
-    width: 25,
-    height: 25,
+    width: 25.5,
+    height: 25.5,
     resizeMode: 'contain',
   },
   passkeyButton: {

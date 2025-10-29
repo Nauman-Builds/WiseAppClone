@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   View,
   Text,
@@ -6,16 +7,28 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@react-native-vector-icons/ionicons';
-import { Colors } from '../theme/colors';
+import { RootStackParamList } from '../navigation/types';
+import { useNavigation } from '@react-navigation/native';
+import { Colors } from '../theme/Colors';
 import { Images } from '../assets/images';
 
-const ProfileScreen = ({ navigation }) => {
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Profile'
+>;
+
+const ProfileScreen: React.FC = () => {
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.closeButton} onPress={() => navigation.replace('Main')}>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={() => navigation.replace('Main', { screen: 'Home' })}
+        >
           <Ionicons name="close-outline" size={24} color="#111" />
         </TouchableOpacity>
 
@@ -23,8 +36,6 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.openText}>Open an account</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Profile Circle */}
       <View style={styles.profileWrapper}>
         <View style={styles.profileCircle}>
           <Text style={styles.profileInitials}>YC</Text>
@@ -32,40 +43,17 @@ const ProfileScreen = ({ navigation }) => {
             <Ionicons name="camera-outline" size={16} color="#000" />
           </TouchableOpacity>
         </View>
-
         <Text style={styles.profileName}>YEKATIERINA CHURAKOVA</Text>
         <Text style={styles.profileSubtitle}>Personal account</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: Colors.secondary,
-            borderRadius: 17,
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            marginTop: 4,
-          }}
-        >
-          <Image
-            source={Images.splash_logo}
-            style={{ width: 20, height: 20 }}
-          />
+        <View style={styles.usernameContainer}>
+          <Image source={Images.splash_logo} style={styles.usernameIcon} />
           <Text style={styles.profileSubtitle2}>@yekatierinac</Text>
         </View>
       </View>
-
-      {/* Your Account Section */}
       <Text style={styles.sectionTitle}>Your account</Text>
 
       <TouchableOpacity style={styles.listItem}>
-        <View
-          style={{
-            borderWidth: 0.8,
-            borderColor: Colors.secondary,
-            borderRadius: 50,
-            padding: 9,
-          }}
-        >
+        <View style={styles.iconWrapper}>
           <Ionicons name="notifications-outline" size={25} color="#111" />
         </View>
         <Text style={styles.listText}>Inbox</Text>
@@ -78,14 +66,7 @@ const ProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.listItem}>
-        <View
-          style={{
-            borderWidth: 0.8,
-            borderColor: Colors.secondary,
-            borderRadius: 50,
-            padding: 9,
-          }}
-        >
+        <View style={styles.iconWrapper}>
           <Ionicons name="help-outline" size={25} color="#111" />
         </View>
         <Text style={styles.listText}>Help</Text>
@@ -98,18 +79,8 @@ const ProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.listItem}>
-        <View
-          style={{
-            borderWidth: 0.8,
-            borderColor: Colors.secondary,
-            borderRadius: 50,
-            padding: 12,
-          }}
-        >
-          <Image
-            source={Images.multiple_documents}
-            style={{ width: 21, height: 21, resizeMode: 'contain' }}
-          />
+        <View style={styles.iconWrapperDocs}>
+          <Image source={Images.multiple_documents} style={styles.docsIcon} />
         </View>
         <Text style={styles.listText}>Statements and reports</Text>
         <Ionicons
@@ -119,19 +90,10 @@ const ProfileScreen = ({ navigation }) => {
           style={styles.chevron}
         />
       </TouchableOpacity>
-
-      {/* Settings Section */}
       <Text style={styles.sectionTitle}>Settings</Text>
 
-      <TouchableOpacity style={[styles.listItem, {marginTop: 12 }]}>
-        <View
-          style={{
-            borderWidth: 0.8,
-            borderColor: Colors.secondary,
-            borderRadius: 50,
-            padding: 10,
-          }}
-        >
+      <TouchableOpacity style={[styles.listItem, { marginTop: 12 }]}>
+        <View style={styles.iconWrapper}>
           <Ionicons name="shield-outline" size={25} color="#111" />
         </View>
         <View style={{ width: '75%' }}>
@@ -148,15 +110,10 @@ const ProfileScreen = ({ navigation }) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.listItem, { marginTop: 16, marginBottom: 60 }]}>
-        <View
-          style={{
-            borderWidth: 0.8,
-            borderColor: Colors.secondary,
-            borderRadius: 50,
-            padding: 10,
-          }}
-        >
+      <TouchableOpacity
+        style={[styles.listItem, { marginTop: 16, marginBottom: 60 }]}
+      >
+        <View style={styles.iconWrapper}>
           <Ionicons name="settings-outline" size={25} color="#111" />
         </View>
         <View style={{ width: '75%' }}>
@@ -177,13 +134,17 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background, padding: 20, },
+  container: { flex: 1, backgroundColor: Colors.background, padding: 20 },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  closeButton: { backgroundColor: Colors.secondary, borderRadius: 25, padding: 7 },
+  closeButton: {
+    backgroundColor: Colors.secondary,
+    borderRadius: 25,
+    padding: 7,
+  },
   openButton: {
     backgroundColor: Colors.primary,
     borderRadius: 25,
@@ -195,14 +156,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
     textAlign: 'center',
-    textAlignVertical: 'center',
   },
 
-  // Profile Circle
-  profileWrapper: {
-    alignItems: 'center',
-    marginVertical: 25,
-  },
+  // Profile
+  profileWrapper: { alignItems: 'center', marginVertical: 25 },
   profileCircle: {
     width: 80,
     height: 80,
@@ -211,11 +168,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  profileInitials: {
-    color: '#000',
-    fontSize: 26,
-    fontWeight: '700',
-  },
+  profileInitials: { color: '#000', fontSize: 26, fontWeight: '700' },
   cameraButton: {
     position: 'absolute',
     bottom: 0,
@@ -230,7 +183,6 @@ const styles = StyleSheet.create({
     fontSize: 32.5,
     fontWeight: '900',
     textAlign: 'center',
-    textAlignVertical: 'center',
     marginTop: 12,
     lineHeight: 29,
     letterSpacing: -0.6,
@@ -241,13 +193,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 6,
   },
-  profileSubtitle2: {
-    fontSize: 14,
-    color: '#111',
-    fontWeight: '700',
+  usernameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.secondary,
+    borderRadius: 17,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: 4,
   },
+  usernameIcon: { width: 20, height: 20 },
+  profileSubtitle2: { fontSize: 14, color: '#111', fontWeight: '700' },
 
-  // Section
+  // Sections
   sectionTitle: {
     fontSize: 22,
     color: '#222',
@@ -280,9 +238,20 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     marginTop: 2,
   },
-  chevron: {
-    marginLeft: 'auto',
+  chevron: { marginLeft: 'auto' },
+  iconWrapper: {
+    borderWidth: 0.8,
+    borderColor: Colors.secondary,
+    borderRadius: 50,
+    padding: 9,
   },
+  iconWrapperDocs: {
+    borderWidth: 0.8,
+    borderColor: Colors.secondary,
+    borderRadius: 50,
+    padding: 12,
+  },
+  docsIcon: { width: 21, height: 21, resizeMode: 'contain' },
 });
 
 export default ProfileScreen;

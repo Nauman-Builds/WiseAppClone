@@ -1,4 +1,15 @@
-export const transactionsData = [
+export interface Transaction {
+  id: string;
+  title: string;
+  status: string;
+  amount: string;
+  date: string;
+  icon: string;
+  iconColor: string;
+  color?: string;
+}
+
+export const transactionsData: Transaction[] = [
   {
     id: '1',
     title: 'Nathaniel Alab',

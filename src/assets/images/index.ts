@@ -1,4 +1,24 @@
-export const Images = {
+export interface ImageAssets {
+    app_logo: any;
+    apple_logo: any;
+    cards_nav: any;
+    facebook_logo: any;
+    google_logo: any;
+    home_nav: any;
+    login_passkey: any;
+    pass_off: any;
+    pass_on: any;
+    payments_nav: any;
+    people_nav: any;
+    splash_logo: any;
+    graph_image: any;
+    us_flag: any;
+    euro_flag: any;
+    fiverr_logo: any;
+    multiple_documents: any;
+}
+
+export const Images: ImageAssets = {
     app_logo: require('./app_logo.png'),
     apple_logo: require('./apple_logo.png'),
     cards_nav: require('./cards_nav.png'),
