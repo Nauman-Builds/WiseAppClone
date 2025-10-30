@@ -46,11 +46,14 @@ yarn ios
 
 **[Muhammad Nauman Zafar]**  
 Mobile Application Developer | React Native | Firebase | IoT Sensors | Google Maps SDK | Typescript | Tailwind CSS | Android Native | iOS | JavaScript ES6 
+
+**Experience:** 3 Years in Mobile App Development  
+📧 Contact: [nauman.zafar.123@gmail.com] 
 🔗 [GitHub](https://github.com/Nauman-Builds)
 🔗 [Linkedin](https://linkedin.com/in/nauman-tech/)
 
 ---
 
-## 🪪 License
+## 📝 License
 
 This project is for **educational and portfolio purposes only** and is **not affiliated with Wise (TransferWise)**.
